@@ -1,4 +1,4 @@
-import { getAllDependents, addDependencies, hasCycle } from "../utils/graph.js";
+import { getAllDependents, addDependencies, hasCycle, removeDependencies } from "../utils/graph.js";
 import { evaluateExpression, extractCellReferences } from "../utils/parser.js";
 
 const sheets = {}; 
@@ -50,6 +50,8 @@ export const setCell = (sheetId, cellId, value) => {
     const expression = value.slice(1);
 
     const dependencies = extractCellReferences(expression);
+
+    removeDependencies(cellId);
 
     for (let dep of dependencies) {
       if (hasCycle(dep, cellId)) {

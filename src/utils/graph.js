@@ -43,7 +43,6 @@ export const getAllDependents = (cellId) => {
   return result;
 };
 
-// 🔥 Detect cycle using DFS
 export const hasCycle = (start, target) => {
   const visited = new Set();
 
@@ -63,4 +62,18 @@ export const hasCycle = (start, target) => {
   };
 
   return dfs(start);
+};
+
+export const removeDependencies = (cellId) => {
+  const oldDeps = reverseGraph[cellId] || [];
+
+  oldDeps.forEach((dep) => {
+    if (forwardGraph[dep]) {
+      forwardGraph[dep] = forwardGraph[dep].filter(
+        (c) => c !== cellId
+      );
+    }
+  });
+
+  delete reverseGraph[cellId];
 };
